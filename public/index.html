@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Smart Infrastructure Advisor - Azure AI</title>
+    <link rel="stylesheet" href="styles.css">
+    <script type="module">
+        import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs';
+        mermaid.initialize({ startOnLoad: true, theme: 'default' });
+        window.mermaid = mermaid;
+    </script>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="header-content">
+                <h1>Smart Infrastructure Advisor</h1>
+                <p>AI-powered Azure architecture recommendations with IaC generation</p>
+            </div>
+        </header>
+
+        <div class="saved-analyses-bar">
+            <div class="saved-header">
+                <h3>📁 Saved Analyses</h3>
+                <button class="clear-all-btn" onclick="clearAllSaved()">Clear All</button>
+            </div>
+            <div id="savedList" class="saved-list">
+                <p class="empty-state">No saved analyses yet</p>
+            </div>
+        </div>
+
+        <div class="input-section">
+            <h2>Project Requirements</h2>
+            <textarea 
+                id="requirements" 
+                placeholder="Describe your project: users, features, scale, compliance needs, budget constraints..."
+                rows="6"></textarea>
+            
+            <div class="options-row">
+                <label class="checkbox-label">
+                    <input type="checkbox" id="includeTerraform" checked>
+                    Generate Terraform code
+                </label>
+                <label class="checkbox-label">
+                    <input type="checkbox" id="includeDiagram" checked>
+                    Generate architecture diagram
+                </label>
+            </div>
+
+            <button id="analyzeBtn" onclick="analyzeRequirements()">
+                <span id="btnText">Analyze & Generate Architecture</span>
+                <span id="btnLoader" class="loader" style="display:none;"></span>
+            </button>
+        </div>
+
+        <div id="results" class="results-section" style="display:none;">
+            <div class="results-header">
+                <h2>Architecture Recommendation</h2>
+                <div class="action-buttons">
+                    <button class="action-btn" onclick="saveAnalysis()">💾 Save</button>
+                    <button class="action-btn" onclick="exportToPDF()">📄 Export PDF</button>
+                </div>
+            </div>
+            
+            <div class="result-card">
+                <h3>Executive Summary</h3>
+                <p id="summary"></p>
+            </div>
+
+            <div id="diagramSection" class="result-card" style="display:none;">
+                <h3>Architecture Diagram</h3>
+                <div id="architectureDiagram" class="diagram-container"></div>
+            </div>
+
+            <div class="result-card">
+                <h3>Architecture Components</h3>
+                <div id="architecture"></div>
+            </div>
+
+            <div class="result-card">
+                <h3>Cost Estimate</h3>
+                <div id="cost"></div>
+            </div>
+
+            <div id="terraformSection" class="result-card" style="display:none;">
+                <div class="code-header">
+                    <h3>Terraform Infrastructure Code</h3>
+                    <button class="copy-btn" onclick="copyTerraform()">Copy Code</button>
+                </div>
+                <pre id="terraformCode"></pre>
+            </div>
+
+            <div class="result-card">
+                <h3>Deployment Checklist</h3>
+                <ol id="deployment"></ol>
+            </div>
+
+            <div class="result-card">
+                <h3>Key Considerations</h3>
+                <ul id="considerations"></ul>
+            </div>
+
+            <div class="qa-section">
+                <h3>Ask Follow-up Questions</h3>
+                <div class="qa-input">
+                    <input 
+                        type="text" 
+                        id="question" 
+                        placeholder="Ask about implementation, security, scaling, costs..."
+                    >
+                    <button onclick="askQuestion()">Ask</button>
+                </div>
+                <div id="qaHistory"></div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <script src="app.js"></script>
+</body>
+</html>
